@@ -3,8 +3,8 @@ $(function(){
    var pixelpainter = new PixelPainter(20,20);
      $("#artboard").append(pixelpainter.artboard);
      $("#controls").append(pixelpainter.controls);
-
-
+     $("#controls").append(pixelpainter.erasebutton);
+     $("#controls").append(pixelpainter.clearbutton);
 
     $(".controlcell").each(function () {
       // random number between 0x000000 and 0xFFFFFF
@@ -16,16 +16,31 @@ $(function(){
       "background" : "rgb("+random_bg_r+","+random_bg_g+","+random_bg_b+")"
     });
   });
-    $(".controlcell").click(function(){
+    $(".controlcell, .erase").click(function(){
       pixelpainter.colors  = $(this).css("background-color");
-
       });
 
 
     $(".cell").click(function(){
       $(this).css("background-color", pixelpainter.colors);
-
     });
+
+  var clear = $("<div>", { "class" : "clear"});
+  $('div.clear').html("clear");
+  $(".clear").click(function(){
+    $(".cell").each(function(){
+      $(this).css("background-color", "white");
+      
+    });
+  });
+
+  var erase = $("<div>", { "class" : "erase"});
+  $('div.erase').html("erase");
+  $(".erase").click(function(){
+    $(this).css("background-color", "white");
+  })
+
+
 
 }); // end .ready()
 
@@ -35,13 +50,9 @@ function PixelPainter (width, height){
   this.artboard = createGrid(width,height);
   this.controls = createControlGrid();
   this.colors;
-  // this.controls = $
-
-  //create the boxes into the bigbox
-  // var smallbox = $("<div>", { "class" : "smallbox" });
-
-  //append grid to artboard
-  // this.artboard.append(createGrid(width, height));
+  this.clearbutton = createClearButton();
+  this.erasebutton = createEraseButton();
+  this.erasecolor;
 
 }
 
@@ -94,10 +105,12 @@ function createControlGrid(){
     return grid;
 }
 
-
-//button function
-  var erase = $("<div>", { "class" : "erase"});
+function createClearButton (){
   var clear = $("<div>", { "class" : "clear"});
+  return clear;
+}
 
-//
-  
+function createEraseButton () {
+  var erase = $("<div>", { "class" : "erase"});
+  return erase;
+}
